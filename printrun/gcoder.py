@@ -13,6 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Printrun.  If not, see <http://www.gnu.org/licenses/>.
+from __future__ import print_function
 
 import sys
 import re
@@ -731,25 +732,24 @@ class LightGCode(GCode):
 
 def main():
     if len(sys.argv) < 2:
-        print "usage: %s filename.gcode" % sys.argv[0]
+        print("usage: {} filename.gcode".format(sys.argv[0]))
         return
 
-    print "Line object size:", sys.getsizeof(Line("G0 X0"))
-    print "Light line object size:", sys.getsizeof(LightLine("G0 X0"))
+    print("Line object size:", sys.getsizeof(Line("G0 X0")))
+    print("Light line object size:", sys.getsizeof(LightLine("G0 X0")))
     gcode = GCode(open(sys.argv[1], "rU"))
 
-    print "Dimensions:"
-    xdims = (gcode.xmin, gcode.xmax, gcode.width)
-    print "\tX: %0.02f - %0.02f (%0.02f)" % xdims
-    ydims = (gcode.ymin, gcode.ymax, gcode.depth)
-    print "\tY: %0.02f - %0.02f (%0.02f)" % ydims
-    zdims = (gcode.zmin, gcode.zmax, gcode.height)
-    print "\tZ: %0.02f - %0.02f (%0.02f)" % zdims
-    print "Filament used: %0.02fmm" % gcode.filament_length
-    for i in enumerate(gcode.filament_length_multi):
-        print "E%d %0.02fmm" % (i[0],i[1])
-    print "Number of layers: %d" % gcode.layers_count
-    print "Estimated duration: %s" % gcode.estimate_duration()[1]
+    print("Dimensions:")
+    print("\tX: {} - {} ({})".format(gcode.xmin, gcode.xmax, gcode.width))
+    print("\tY: {} - {} ({})".format(gcode.ymin, gcode.ymax, gcode.depth))
+    print("\tZ: {} - {} ({})".format(gcode.zmin, gcode.zmax, gcode.height))
+
+    print("Filament used: {}mm".format(gcode.filament_length))
+    for ep, multi_length in enumerate(gcode.filament_length_multi):
+        print("EP{} {}mm".format(ep, multi_length))
+
+    print("Number of layers: {}".format(gcode.layers_count))
+    print("Estimated duration: {}".format(gcode.estimate_duration()[1]))
 
 if __name__ == '__main__':
     main()
